@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Find Closest Parking Lot</title>
+<link rel="stylesheet" href="well.css">
+<style>
+body {
+margin: 0;
+padding: 0;
+font-family: Arial, sans-serif;
+}
+
+section {
+height: 100vh;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+text-align: center;
+}
+
+#section1 {
+background-image: url("file:///C:/Users/darpo/OneDrive/Documents/parking lot.jpg");
+background-size: cover;
+background-position: center;
+background-attachment: fixed;
+color: #ffffff;
+}
+
+#section2 {
+background-color: rgb(204, 198, 192);
+color: #ffffff;
+}
+
+#section3 {
+background-color: rgb(104, 103, 103);
+color: #ffffff;
+}
+
+h1 {
+font-size: 5em;
+}
+
+h2 {
+font-size: 3em;
+}
+
+p {
+font-size: 2em;
+}
+
+input {
+margin-top: 10px;
+padding: 8px;
+font-size: 1em;
+}
+</style>
+</head>
+<body>
+<section id="section1">
+<h1>Parking Lot</h1>
+<p>Just put in your current location and find the nearest parking spot!</p>
+</section>
+<section id="section3"> <!-- Exchange section IDs -->
+<h2> Get the most out of it. It is SIMPLE!</h2>
+<p> It gets so tiring when you don't know where to park especially when you are late. Just head on and find your latitute and longtitude from the map in the link below by tapping on your current location on the map and let's get you the closest parking lot!</p>
+<a href="https://www.google.com/maps/place/Mount+Holyoke+College/@42.2554249,-72.5777552,17z/data=!3m1!4b1!4m6!3m5!1s0x89e6dbadb5482917:0xc5a8be39f5094d4c!8m2!3d42.255425!4d-72.5728843!16zL20vMHA3dGI?authuser=0&entry=ttu"> This is a link to Mount Holyoke Campus Map</a>
+</section>
+<section id="section2" class="container"> <!-- Exchange section IDs -->
+<h1>Find Closest Parking Lot</h1>
+<form id="locationForm">
+<label for="lat">Latitude:</label>
+<input type="text" id="lat" name="lat" required>
+
+<label for="lon">Longitude:</label>
+<input type="text" id="lon" name="lon" required>
+
+<button type="button" onclick="findClosestParking()">Find Closest Parking Lot</button>
+</form>
+
+<div id="result"></div>
+</section>
+
+<script>
+function findClosestParking() {
+var lat = parseFloat(document.getElementById('lat').value);
+var lon = parseFloat(document.getElementById('lon').value);
+
+// Static list of parking lots with their coordinates
+var parkingLots = [
+{"name": "Kendall Parking Lot", "lat": 42.25989, "lon": -72.57162},
+{"name": "Asian Development Center Parking Lot", "lat": 42.25982, "lon": -72.573425},
+{"name": "Career Development Center Parking Lot", "lat": 42.258345, "lon": -72.573251},
+{"name": "Prospect Parking Lot", "lat": 42.256412, "lon": -72.571345},
+{"name": "Mail and Copy Center Parking Lot", "lat": 42.255797, "lon": -72.572780},
+{"name": "Mary Lyon Parking Lot", "lat": 42.256398, "lon": -72.575415},
+{"name": "Skinner Parking Lot", "lat": 42.255373, "lon": -72.575947},
+{"name": "Mandelle Parking Lot", "lat": 42.253196, "lon": -72.571582},
+{"name": "Chapin Auditorium Parking Lot", "lat": 42.253737, "lon": -72.576382},
+];
+
+var closestParkingLot = getClosestParkingLot({lat: lat, lon: lon}, parkingLots);
+
+document.getElementById('result').innerHTML = '<p>The closest parking lot is: <strong>' + closestParkingLot.name + '</strong></p>';
+}
+
+function getClosestParkingLot(userLocation, parkingLots) {
+var closestLot = parkingLots.reduce(function (prev, current) {
+var prevDistance = distance(userLocation, prev);
+var currentDistance = distance(userLocation, current);
+return (currentDistance < prevDistance) ? current : prev;
+});
+
+return closestLot;
+}
+
+function distance(coord1, coord2) {
+var lat1 = coord1.lat, lon1 = coord1.lon;
+var lat2 = coord2.lat, lon2 = coord2.lon;
+return Math.sqrt(Math.pow(lat1 - lat2, 2) + Math.pow(lon1 - lon2, 2));
+}
+</script>
+</body>
+</html>
